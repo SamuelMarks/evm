@@ -32,6 +32,7 @@ type Config struct {
 	ProxyAddr  string                  `mapstructure:"proxy"`
 	ClientAddr string                  `mapstructure:"client-connect"`
 	Standalone bool                    `mapstructure:"standalone"`
+	Syslog     bool                    `mapstructure:"syslog"`
 }
 
 // DefaultConfig returns the default configuration for an EVM-Lite node
@@ -43,6 +44,7 @@ func DefaultConfig() *Config {
 		Raft:         DefaultRaftConfig(),
 		ProxyAddr:    "127.0.0.1:1338",
 		ClientAddr:   "127.0.0.1:1339",
+		Syslog:       false,
 	}
 }
 
