@@ -69,7 +69,7 @@ do
 		-v $dest:/datadir \
 		-v $PASS:/pwd.txt \
 		ethereum/client-go -verbosity=1 --datadir=/datadir --password=/pwd.txt account new  | \
-    		awk '{gsub("[{}]", "\""); print $2}'  >> $dest/addr
+		awk '{gsub("[{}]", "\""); print $2}'  >> $dest/addr
 done
 
 # Generate the genesis file

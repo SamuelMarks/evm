@@ -24,4 +24,4 @@ stop:
 	$(MAKE) -C terraform/$(ENV) destroy
 
 .PHONY: up build-docker build-ami conf start stop
-	
+
