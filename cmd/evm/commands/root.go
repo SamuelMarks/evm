@@ -61,7 +61,7 @@ var RootCmd = &cobra.Command{
 		logger.WithFields(logrus.Fields{
 			"Base":     config.BaseConfig,
 			"Eth":      config.Eth,
-			"Lachesis": config.Lachesis}).Debug("Config")
+			"DAG1": config.DAG1}).Debug("Config")
 
 		return nil
 	},

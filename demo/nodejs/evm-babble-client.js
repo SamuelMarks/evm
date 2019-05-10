@@ -1,6 +1,6 @@
 http = require('http');
 
-var EVMLachesisClient = function(host, port) {
+var EVMDAG1Client = function(host, port) {
     this.host = host
     this.port = port
 }
@@ -28,7 +28,7 @@ request = function(options, callback) {
 }
 
 // class methods
-EVMLachesisClient.prototype.getAccount = function(address) {
+EVMDAG1Client.prototype.getAccount = function(address) {
     var options = {
         host: this.host,
         port: this.port,
@@ -43,7 +43,7 @@ EVMLachesisClient.prototype.getAccount = function(address) {
     })
 } 
 
-EVMLachesisClient.prototype.getAccounts = function() {
+EVMDAG1Client.prototype.getAccounts = function() {
     var options = {
         host: this.host,
         port: this.port,
@@ -58,7 +58,7 @@ EVMLachesisClient.prototype.getAccounts = function() {
     })
 }  
 
-EVMLachesisClient.prototype.call = function(tx) {
+EVMDAG1Client.prototype.call = function(tx) {
     var options = {
         host: this.host,
         port: this.port,
@@ -74,7 +74,7 @@ EVMLachesisClient.prototype.call = function(tx) {
     })
 } 
 
-EVMLachesisClient.prototype.sendTx = function(tx) {
+EVMDAG1Client.prototype.sendTx = function(tx) {
     var options = {
         host: this.host,
         port: this.port,
@@ -90,7 +90,7 @@ EVMLachesisClient.prototype.sendTx = function(tx) {
     })
 }
 
-EVMLachesisClient.prototype.sendRawTx = function(tx) {
+EVMDAG1Client.prototype.sendRawTx = function(tx) {
     var options = {
         host: this.host,
         port: this.port,
@@ -106,7 +106,7 @@ EVMLachesisClient.prototype.sendRawTx = function(tx) {
     })
 }
 
-EVMLachesisClient.prototype.getReceipt = function(txHash) {
+EVMDAG1Client.prototype.getReceipt = function(txHash) {
     var options = {
         host: this.host,
         port: this.port,
@@ -121,4 +121,4 @@ EVMLachesisClient.prototype.getReceipt = function(txHash) {
     })
 } 
 
-module.exports = EVMLachesisClient;
+module.exports = EVMDAG1Client;

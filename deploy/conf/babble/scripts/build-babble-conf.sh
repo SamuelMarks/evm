@@ -1,9 +1,9 @@
 #!/bin/bash
 
-# This script creates the configuration for a Lachesis testnet with a variable  
+# This script creates the configuration for a DAG1 testnet with a variable
 # number of nodes. It will generate crytographic key pairs and assemble a 
-# peers.json file in the format used by Lachesis. The files are copied into 
-# individual folders for each node which can be used as the datadir that Lachesis 
+# peers.json file in the format used by DAG1. The files are copied into
+# individual folders for each node which can be used as the datadir that DAG1
 # reads configuration from. 
 
 set -e
@@ -19,12 +19,12 @@ l=$((N-1))
 
 for i in $(seq 0 $l) 
 do
-	dest=$DEST/node$i/lachesis
+	dest=$DEST/node$i/dag1
 	mkdir -p $dest
 	echo "Generating key pair for node$i"
 	docker run \
-		-v $dest:/.lachesis \
-		--rm Fantom-foundation/go-lachesis keygen
+		-v $dest:/.dag1 \
+		--rm SamuelMarks/dag1 keygen
 	echo "$IPBASE$(($IPADD + $i)):$PORT" > $dest/addr
 done
 
@@ -32,7 +32,7 @@ PFILE=$DEST/peers.json
 echo "[" > $PFILE 
 for i in $(seq 0 $l)
 do
-	dest=$DEST/node$i/lachesis
+	dest=$DEST/node$i/dag1
 	
 	com=","
 	if [[ $i == $l ]]; then 
@@ -49,7 +49,7 @@ echo "]" >> $PFILE
 
 for i in $(seq 0 $l) 
 do
-	dest=$DEST/node$i/lachesis
+	dest=$DEST/node$i/dag1
 	cp $DEST/peers.json $dest/
 done
 

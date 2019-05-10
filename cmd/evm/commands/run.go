@@ -8,13 +8,13 @@ import (
 	"github.com/spf13/viper"
 
 	"github.com/Fantom-foundation/go-evm/src/engine"
-	"github.com/Fantom-foundation/go-lachesis/src/utils"
+	"github.com/SamuelMarks/dag1/src/utils"
 )
 
 //AddRunFlags adds flags to the Run command
 func AddRunFlags(cmd *cobra.Command) {
-	//Lachesis Socket
-	cmd.Flags().String("proxy", config.ProxyAddr, "IP:PORT of Lachesis proxy")
+	//DAG1 Socket
+	cmd.Flags().String("proxy", config.ProxyAddr, "IP:PORT of DAG1 proxy")
 	if runtime.GOOS != "windows" {
 		cmd.Flags().String("pidfile", config.Pidfile, "pidfile location; /tmp/go-evm.pid by default")
 	}

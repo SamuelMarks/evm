@@ -6,14 +6,14 @@ import (
 	"github.com/Fantom-foundation/go-evm/src/config"
 	"github.com/Fantom-foundation/go-evm/src/service"
 	"github.com/Fantom-foundation/go-evm/src/state"
-	"github.com/Fantom-foundation/go-lachesis/src/poset"
-	"github.com/Fantom-foundation/go-lachesis/src/proxy"
+	"github.com/SamuelMarks/dag1/src/poset"
+	"github.com/SamuelMarks/dag1/src/proxy"
 )
 
 type SocketEngine struct {
 	service  *service.Service
 	state    *state.State
-	proxy    *proxy.GrpcLachesisProxy
+	proxy    *proxy.GrpcDAG1Proxy
 	submitCh chan []byte
 	logger   *logrus.Logger
 }
@@ -39,7 +39,7 @@ func NewSocketEngine(config config.Config, logger *logrus.Logger) (*SocketEngine
 	logger.WithFields(logrus.Fields{
 		"config": config}).Debug("NewSocketEngine")
 
-	lproxy, err := proxy.NewGrpcLachesisProxy(config.ProxyAddr, logger)
+	lproxy, err := proxy.NewGrpcDAG1Proxy(config.ProxyAddr, logger)
 	if err != nil {
 		return nil, err
 	}

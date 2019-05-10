@@ -7,6 +7,6 @@ IPADD = 0
 conf:
 	rm -rf conf
 	./../eth/scripts/build-eth-conf.sh $(NODES) $(DEST) $(PASS)
-	./scripts/build-lachesis-conf.sh $(NODES) $(IPBASE) $(IPADD) $(DEST)
+	./scripts/build-dag1-conf.sh $(NODES) $(IPBASE) $(IPADD) $(DEST)
 	./scripts/edit-toml.sh $(NODES) $(IPBASE) $(IPADD)
 .PHONY: conf

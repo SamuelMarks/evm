@@ -1,4 +1,4 @@
-package lachesis
+package dag1
 
 import (
 	"github.com/ethereum/go-ethereum/common"
@@ -6,10 +6,10 @@ import (
 
 	"github.com/Fantom-foundation/go-evm/src/service"
 	"github.com/Fantom-foundation/go-evm/src/state"
-	"github.com/Fantom-foundation/go-lachesis/src/poset"
+	"github.com/SamuelMarks/dag1/src/poset"
 )
 
-// InmemProxy implements the Lachesis AppProxy interface
+// InmemProxy implements the DAG1 AppProxy interface
 type InmemProxy struct {
 	service  *service.Service
 	state    *state.State
@@ -27,12 +27,12 @@ func NewInmemProxy(state *state.State,
 		service:  service,
 		state:    state,
 		submitCh: submitCh,
-		logger:   logger.WithField("module", "lachesis/proxy"),
+		logger:   logger.WithField("module", "dag1/proxy"),
 	}
 }
 
 /*******************************************************************************
-Implement Lachesis AppProxy Interface
+Implement DAG1 AppProxy Interface
 *******************************************************************************/
 
 // SubmitCh is the channel through which the Service sends transactions to the

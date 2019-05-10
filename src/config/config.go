@@ -22,8 +22,8 @@ type Config struct {
 	// Options for EVM and State
 	Eth *EthConfig `mapstructure:"eth"`
 
-	// Options for Lachesis consensus
-	Lachesis *LachesisConfig `mapstructure:"lachesis"`
+	// Options for DAG1 consensus
+	DAG1 *DAG1Config `mapstructure:"dag1"`
 
 	// Options for Raft consensus
 	Raft *RaftConfig `mapstructure:"raft"`
@@ -39,7 +39,7 @@ func DefaultConfig() *Config {
 	return &Config{
 		BaseConfig: DefaultBaseConfig(),
 		Eth:        DefaultEthConfig(),
-		Lachesis:   DefaultLachesisConfig(),
+		DAG1:   DefaultDAG1Config(),
 		Raft:       DefaultRaftConfig(),
 		ProxyAddr:  "127.0.0.1:1338",
 		ClientAddr: "127.0.0.1:1339",
@@ -54,8 +54,8 @@ func (c *Config) SetDataDir(datadir string) {
 	if c.Eth != nil {
 		c.Eth.SetDataDir(fmt.Sprintf("%s/eth", datadir))
 	}
-	if c.Lachesis != nil {
-		c.Lachesis.SetDataDir(fmt.Sprintf("%s/lachesis", datadir))
+	if c.DAG1 != nil {
+		c.DAG1.SetDataDir(fmt.Sprintf("%s/dag1", datadir))
 	}
 	if c.Raft != nil {
 		c.Raft.SetDataDir(fmt.Sprintf("%s/raft", datadir))
@@ -66,16 +66,16 @@ func (c *Config) SetDataDir(datadir string) {
 BASE CONFIG
 *******************************************************************************/
 
-// BaseConfig contains the top level configuration for an EVM-Lachesis node
+// BaseConfig contains the top level configuration for an EVM-DAG1 node
 type BaseConfig struct {
-	// Top-level directory of evm-lachesis data
+	// Top-level directory of evm-dag1 data
 	DataDir string `mapstructure:"datadir"`
 
 	// Debug, info, warn, error, fatal, panic
 	LogLevel string `mapstructure:"log"`
 }
 
-// DefaultBaseConfig returns the default top-level configuration for EVM-Lachesis
+// DefaultBaseConfig returns the default top-level configuration for EVM-DAG1
 func DefaultBaseConfig() BaseConfig {
 	return BaseConfig{
 		DataDir:  DefaultDataDir,

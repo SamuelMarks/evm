@@ -5,7 +5,7 @@ import (
 
 	"github.com/Fantom-foundation/go-evm/src/service"
 	"github.com/Fantom-foundation/go-evm/src/state"
-	"github.com/Fantom-foundation/go-lachesis/src/poset"
+	"github.com/SamuelMarks/dag1/src/poset"
 )
 
 //InmemProxy implements the AppProxy interface

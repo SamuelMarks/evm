@@ -20,7 +20,7 @@ ex:
 
 ```bash
 evm$ cd deploy
-evm/deploy$ make CONSENSUS=lachesis NODES=4
+evm/deploy$ make CONSENSUS=dag1 NODES=4
 ```
 
 Then, in an other terminal, start the interactive demo:
@@ -32,8 +32,8 @@ $ ./demo.sh ../deploy/terraform/local/ips.dat
 The ips.dat file, generated during the deploy phase, tells the demo program
 where to reach the nodes.
 
-In this case, we are using Lachesis consensus, so it is interesting to monitor
-the lachesis nodes:
+In this case, we are using DAG1 consensus, so it is interesting to monitor
+the dag1 nodes:
 
 ```bash
 $ ./watch.sh ../deploy/terraform/local/ips.dat

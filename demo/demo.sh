@@ -3,7 +3,7 @@
 set -eu
 
 IPS=${1:-"ips.dat"}
-KEY_DIR=${2:-"../deploy/conf/lachesis/conf/keystore"}
+KEY_DIR=${2:-"../deploy/conf/dag1/conf/keystore"}
 PWD_FILE=${3:-"../deploy/conf/eth/pwd.txt"}
 PORT=${4:-8080}
 SOL_FILE=${5:-"crowd-funding.sol"}

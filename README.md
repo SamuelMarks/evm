@@ -50,7 +50,7 @@
 
 ## Usage
 
-The **lachesis_addr** option specifies the endpoint where the consensus node is listening  
+The **dag1_addr** option specifies the endpoint where the consensus node is listening  
 to the VM.
 
 The **proxy_addr** option specifies the endpoint where the VM is listening for consensus events.  
@@ -64,7 +64,7 @@ USAGE:
 
 OPTIONS:
    --datadir value        Directory for the databases and keystore (default: "$HOME/.evm")
-   --lachesis_addr value  IP:Port of consensus node (default: "127.0.0.1:1338")
+   --dag1_addr value  IP:Port of consensus node (default: "127.0.0.1:1338")
    --proxy_addr value     IP:Port to bind Proxy server (default: "127.0.0.1:1339")
    --api_addr value       IP:Port to bind API server (default: ":8080")
    --log_level value      Debug, info, warn, error, fatal, panic (default: "debug")

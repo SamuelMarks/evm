@@ -10,12 +10,12 @@ import (
 	"github.com/Fantom-foundation/go-evm/src/config"
 	"github.com/Fantom-foundation/go-evm/src/service"
 	"github.com/Fantom-foundation/go-evm/src/state"
-	"github.com/Fantom-foundation/go-lachesis/src/crypto"
-	"github.com/Fantom-foundation/go-lachesis/src/net"
-	"github.com/Fantom-foundation/go-lachesis/src/node"
-	"github.com/Fantom-foundation/go-lachesis/src/peers"
-	"github.com/Fantom-foundation/go-lachesis/src/poset"
-	serv "github.com/Fantom-foundation/go-lachesis/src/service"
+	"github.com/SamuelMarks/dag1/src/crypto"
+	"github.com/SamuelMarks/dag1/src/net"
+	"github.com/SamuelMarks/dag1/src/node"
+	"github.com/SamuelMarks/dag1/src/peers"
+	"github.com/SamuelMarks/dag1/src/poset"
+	serv "github.com/SamuelMarks/dag1/src/service"
 )
 
 type InmemEngine struct {
@@ -48,7 +48,7 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 	//------------------------------------------------------------------------------
 
 	// Create the PEM key
-	pemKey := crypto.NewPemKey(config.Lachesis.DataDir)
+	pemKey := crypto.NewPemKey(config.DAG1.DataDir)
 
 	// Try a read
 	key, err := pemKey.ReadKey()
@@ -57,7 +57,7 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 	}
 
 	// Create the peer store
-	peerStore := peers.NewJSONPeers(config.Lachesis.DataDir)
+	peerStore := peers.NewJSONPeers(config.DAG1.DataDir)
 	// Try a read
 	participants, err := peerStore.Peers()
 	if err != nil {
@@ -87,10 +87,10 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 	}).Debug("Participants")
 
 	conf := node.NewConfig(
-		time.Duration(config.Lachesis.Heartbeat)*time.Millisecond,
-		time.Duration(config.Lachesis.TCPTimeout)*time.Millisecond,
-		config.Lachesis.CacheSize,
-		config.Lachesis.SyncLimit,
+		time.Duration(config.DAG1.Heartbeat)*time.Millisecond,
+		time.Duration(config.DAG1.TCPTimeout)*time.Millisecond,
+		config.DAG1.CacheSize,
+		config.DAG1.SyncLimit,
 		logger)
 
 	//Instantiate the Store (inmem or badger)
@@ -122,7 +122,7 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 	}*/
 
 	trans, err := net.NewTCPTransport(
-		config.Lachesis.BindAddr, nil, 2, conf.TCPTimeout, logger)
+		config.DAG1.BindAddr, nil, 2, conf.TCPTimeout, logger)
 	if err != nil {
 		return nil, fmt.Errorf("creating TCP Transport: %s", err)
 	}
@@ -132,7 +132,7 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 		return nil, fmt.Errorf("initializing node: %s", err)
 	}
 
-	lserv := serv.NewService(config.Lachesis.ServiceAddr, node, logger)
+	lserv := serv.NewService(config.DAG1.ServiceAddr, node, logger)
 
 	return &InmemEngine{
 		ethState:   state,
@@ -152,7 +152,7 @@ func (i *InmemEngine) Run() error {
 	//ETH API service
 	go i.ethService.Run()
 
-	//Lachesis API service
+	//DAG1 API service
 	go i.service.Serve()
 
 	i.node.Run(true)

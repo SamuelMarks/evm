@@ -22,7 +22,7 @@ import (
 	"github.com/sirupsen/logrus"
 
 	bcommon "github.com/Fantom-foundation/go-evm/src/common"
-	"github.com/Fantom-foundation/go-lachesis/src/poset"
+	"github.com/SamuelMarks/dag1/src/poset"
 )
 
 var (
