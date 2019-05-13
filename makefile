@@ -1,3 +1,5 @@
+export RM?=rm
+
 # vendor uses Glide to install all the Go dependencies in vendor/
 vendor:
 	glide install
@@ -21,4 +23,7 @@ dist:
 test:
 	glide novendor | xargs go test
 
-.PHONY: vendor install build test
+clean:
+	$(RM) -rf vendor glide.lock
+
+.PHONY: vendor install build test clean
