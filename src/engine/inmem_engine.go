@@ -2,7 +2,9 @@ package engine
 
 import (
 	"fmt"
+	"net"
 	//"os"
+	"path/filepath"
 	"time"
 
 	"github.com/sirupsen/logrus"
@@ -11,7 +13,8 @@ import (
 	"github.com/Fantom-foundation/go-evm/src/service"
 	"github.com/Fantom-foundation/go-evm/src/state"
 	"github.com/SamuelMarks/dag1/src/crypto"
-	"github.com/SamuelMarks/dag1/src/net"
+
+	"github.com/SamuelMarks/dag1/src/peer"
 	"github.com/SamuelMarks/dag1/src/node"
 	"github.com/SamuelMarks/dag1/src/peers"
 	"github.com/SamuelMarks/dag1/src/poset"
@@ -59,7 +62,7 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 	// Create the peer store
 	peerStore := peers.NewJSONPeers(config.DAG1.DataDir)
 	// Try a read
-	participants, err := peerStore.Peers()
+	participants, err := peerStore.GetPeers()
 	if err != nil {
 		return nil, err
 	}
@@ -99,7 +102,11 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 	/* TODO inmem only for now */
 	/*switch conf.StoreType {
 	case "inmem":*/
-	store = poset.NewInmemStore(pmap, conf.CacheSize)
+	//store = poset.NewInmemStore(pmap, conf.CacheSize)
+	store, err = poset.NewBadgerStore(pmap, conf.CacheSize, filepath.Join(config.DAG1.DataDir, "badger_db"), nil)
+	if err != nil {
+		return nil, err
+	}
 	/*case "badger":
 		//If the file already exists, load and bootstrap the store using the file
 		if _, err := os.Stat(conf.StorePath); err == nil {
@@ -121,13 +128,38 @@ func NewInmemEngine(config config.Config, logger *logrus.Logger) (*InmemEngine, 
 		return nil, fmt.Errorf("Invalid StoreType: %s", conf.StoreType)
 	}*/
 
-	trans, err := net.NewTCPTransport(
-		config.DAG1.BindAddr, nil, 2, conf.TCPTimeout, logger)
-	if err != nil {
-		return nil, fmt.Errorf("creating TCP Transport: %s", err)
+	createCliFu := func(target string,
+		timeout time.Duration) (peer.SyncClient, error) {
+
+		rpcCli, err := peer.NewRPCClient(
+			peer.TCP, target, time.Second, net.DialTimeout)
+		if err != nil {
+			return nil, err
+		}
+
+		return peer.NewClient(rpcCli)
 	}
 
-	node := node.NewNode(conf, nodeID, key, participants, store, trans, appProxy)
+	producer := peer.NewProducer(
+		config.DAG1.MaxPool, conf.TCPTimeout, createCliFu)
+	backend := peer.NewBackend(
+		peer.NewBackendConfig(), logger, net.Listen)
+	if err := backend.ListenAndServe(peer.TCP, config.DAG1.BindAddr); err != nil {
+		return nil, fmt.Errorf("creating TCP Transport: %s", err)
+	}
+	trans := peer.NewTransport(logger, producer, backend)
+
+	var selectorArgs node.SelectorCreationFnArgs
+	var selectorFn node.SelectorCreationFn
+
+	// Just do "random" peer selector for now.
+	// FIXME: add config parameter for peer selector if needed.
+	selectorArgs = node.RandomPeerSelectorCreationFnArgs{
+		LocalAddr:    config.DAG1.BindAddr,
+	}
+	selectorFn =  node.NewRandomPeerSelectorWrapper
+
+	node := node.NewNode(conf, nodeID, key, participants, store, trans, appProxy, selectorFn, selectorArgs, config.DAG1.BindAddr)
 	if err := node.Init(); err != nil {
 		return nil, fmt.Errorf("initializing node: %s", err)
 	}

@@ -12,7 +12,7 @@ import:
   - src/service
   - src/utils
 - package: github.com/ethereum/go-ethereum
-  version: ~1.8.27
+  version: =1.8.20
   subpackages:
   - accounts
   - accounts/keystore
