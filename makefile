@@ -1,18 +1,20 @@
 export RM?=rm
+export GLIDE?=glide
+export GO?=go
 
 # vendor uses Glide to install all the Go dependencies in vendor/
 vendor:
-	glide install
+	$(GLIDE) install
 
 # install compiles and places the binary in GOPATH/bin
 install:
-	go install \
+	$(GO) install \
 	 	--ldflags '-extldflags "-static"' \
 		./cmd/evm
 
 # build compiles and places the binary in /build
 build:
-	go build \
+	$(GO) build \
 		--ldflags '-extldflags "-static"' \
 		-o build/evm ./cmd/evm/
 
@@ -21,9 +23,10 @@ dist:
 	@BUILD_TAGS='$(BUILD_TAGS)' sh -c "'$(CURDIR)/scripts/dist.sh'"
 
 test:
-	glide novendor | xargs go test
+	$(GLIDE) novendor | xargs go test
 
 clean:
+	$(GLIDE) cc
 	$(RM) -rf vendor glide.lock
 
 .PHONY: vendor install build test clean
